@@ -13,6 +13,14 @@ import java.util.stream.Stream;
 // things not representable in SMT -> stub variables (unknown type)
 public class JavaToSmtExpression extends JavaExpressionVisitor<SmtExpression, Set<JavaExpression>> {
 
+    // pseudo value to represent "this" as literal
+    private static final Object thisValue = new Object() {
+        @Override
+        public String toString() {
+            return "this";
+        }
+    };
+
     @Override
     protected SmtExpression visitArrayAccess(ArrayAccess arrayAccessExpr, Set<JavaExpression> refs) {
         throw new UnsupportedOperationException("No array support yet");
@@ -48,7 +56,7 @@ public class JavaToSmtExpression extends JavaExpressionVisitor<SmtExpression, Se
     @Override
     protected SmtExpression visitThisReference(ThisReference thisExpr, Set<JavaExpression> refs) {
         refs.add(thisExpr);
-        return new SmtExpression.Literal(SmtType.fromExpression(thisExpr), ThisReference.class);
+        return new SmtExpression.Literal(SmtType.fromExpression(thisExpr), thisValue);
     }
 
     @Override
