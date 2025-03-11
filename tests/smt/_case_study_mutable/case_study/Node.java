@@ -61,15 +61,14 @@ public final class Node {
             this.insertTail(newHead);
         }
     }
-    
-    @JMLClause("requires newHead.product.price <= this.head.product.price;")
+
     @JMLClause("ensures this.head == newHead;")
     @JMLClause("ensures \\new_elems_fresh(this.footprint);")
     @JMLClause("assignable this.footprint;")
     // :: error: sorted.contracts.postcondition.not.satisfied
     private void insertHead(
             @Unique @Sorted Node this,
-            Order newHead) {
+            @ComesBefore(price="head.product.price") Order newHead) {
         Packing.unpack(this, Node.class);
         if (this.tail == null) {
             this.tail = new Node(this.head);
@@ -83,14 +82,13 @@ public final class Node {
         Ghost.set("footprint", "\\set_union(\\singleton(this.head), \\singleton(this.tail), \\singleton(this.footprint), this.tail.footprint)");
     }
 
-    @JMLClause("requires this.head.product.price <= newHead.product.price;")
     @JMLClause("ensures this.head == \\old(this.head);")
     @JMLClause("ensures \\new_elems_fresh(this.footprint);")
     @JMLClause("assignable this.footprint;")
     // :: error: sorted.contracts.postcondition.not.satisfied
     private void insertTail(
             @Unique @Sorted Node this,
-            Order newHead) {
+            @ComesAfter(price="head.product.price") Order newHead) {
         Packing.unpack(this, Node.class);
 
         if (tail == null) {
