@@ -32,7 +32,6 @@ public abstract class PackingClientAnalysis<
         return (PackingClientAnnotatedTypeFactory<V, S, T, ? extends CFAbstractAnalysis<V, S, T>>) super.getTypeFactory();
     }
 
-    // TODO: check if there can be ambiguities here (subtle bugs when refinement is parsed in the wrong place)
     /**
      * Returns the tree currently set to be the context for parsing refinement expressions.
      * This must be set and kept up to date by PackingClientTransfer and its sub classes via {@link #setPosition(Tree)}.

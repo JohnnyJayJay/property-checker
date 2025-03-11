@@ -70,8 +70,7 @@ public class ExclusivityStore extends PackingClientStore<ExclusivityValue, Exclu
             // TODO: does this need to be viewpoint-adapted too?
             return factory.getExclusivityAnnotation(methodType.getReturnType());
         } else if (expr instanceof ThisReference) {
-            // if this is not in store, we're in a constructor/initialiser
-            // TODO is this assumption true?
+            // if this is not in store, we're in a constructor/initialiser and `this` is still unique
             return factory.UNIQUE;
         }
         return null;
